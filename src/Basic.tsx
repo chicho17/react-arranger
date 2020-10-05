@@ -37,7 +37,7 @@ const row = new RowBuilder({
   yGap: [4, 0, 0],
   containerType: ["COLUMN", "ROW", "ROW"],
 })
-  .addCell("blue", 50)
+  .addCell("blue", 60)
   .addCell("purple", "1fr")
   .addCell(
     new ColumnBuilder({ yGap: [4, 4, 6] })
@@ -101,9 +101,12 @@ const cellConfigMap = new CellConfigMapBuilder()
 
 const Basic = () => {
   return (
-    <Box sx={{ border: "5px solid pink" }}>
-      <RowArranger row={row} cellConfigMap={cellConfigMap} />
-    </Box>
+    <div>
+      <Box sx={{ border: "5px solid pink" }}>
+        <RowArranger row={row} cellConfigMap={cellConfigMap} />
+      </Box>
+      <pre>row:{JSON.stringify(row, null, 4)}</pre>
+    </div>
   );
 };
 
