@@ -44,13 +44,12 @@ const row = new RowBuilder({
       .addCell("gray1")
       .addCell("gray2")
       .build(),
-    ["1fr", 80, 120]
+    ["1fr", 80, 200]
   )
   .build();
 
 const cellConfigMap = new CellConfigMapBuilder()
   .addCellConfig(
-    // @ts-ignore
     new CellConfigBuilder({
       cellId: "blue",
       Component: Block,
