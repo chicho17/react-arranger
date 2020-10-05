@@ -3,19 +3,10 @@ import { CellConfig, Dict } from "../types";
 class CellConfigMapBuilder {
   cellIdToCellConfig: Dict<CellConfig> = {};
 
-  constructor(cellConfigs?: CellConfig[]) {
-    if (cellConfigs) {
-      this.cellIdToCellConfig = cellConfigs.reduce((acc, cellConfig) => {
-        acc[cellConfig.cellId] = cellConfig;
-        return acc;
-      }, {});
-    }
-  }
-
   addCellConfig(cellConfig: CellConfig) {
     this.cellIdToCellConfig = {
       ...this.cellIdToCellConfig,
-      [cellConfig.cellId]: cellConfig
+      [cellConfig.cellId]: cellConfig,
     };
     return this;
   }
@@ -30,7 +21,7 @@ class CellConfigMapBuilder {
     if (this.cellIdToCellConfig[cellConfig.cellId]) {
       this.cellIdToCellConfig = {
         ...this.cellIdToCellConfig,
-        [cellConfig.cellId]: cellConfig
+        [cellConfig.cellId]: cellConfig,
       };
     }
     return this;

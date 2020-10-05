@@ -15,20 +15,20 @@ const ColumnArranger = ({ column, cellConfigMap }: Props) => {
     <Box
       sx={{
         rowGap: column.rowGap,
-        display: "grid"
+        display: "grid",
       }}
     >
       {column.cells.map(({ cellItem }) => {
         if (typeof cellItem === "string") {
           return (
-            <Box>
+            <Box key={cellItem}>
               <Cell cellConfig={cellConfigMap[cellItem]} />
             </Box>
           );
         }
 
         return (
-          <Box>
+          <Box key={cellItem.id}>
             <RowArranger row={cellItem} cellConfigMap={cellConfigMap} />
           </Box>
         );

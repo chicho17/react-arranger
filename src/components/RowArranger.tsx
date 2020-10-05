@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "theme-ui";
 
-import { CellConfig, Dict, Row } from "../types";
+import { CellConfig, CellSpanTuple, Dict, Row } from "../types";
 import { Cell } from "./Cell";
 import { ColumnArranger } from "./ColumnArranger";
 
@@ -19,10 +19,14 @@ const RowArranger = ({ row, cellConfigMap }: Props) => {
         acc[2].push(cell.cellSpan[2]);
         return acc;
       },
-      [[], [], []]
+      [[], [], []] as [
+        (number | "1fr")[],
+        (number | "1fr")[],
+        (number | "1fr")[]
+      ]
     )
-    .map((list) =>
-      list.every((val) => val === "full")
+    .map((list, index) =>
+      row.containerType[index] === "COLUMN"
         ? "none"
         : list
             .map((val) => (typeof val === "number" ? `${val}px` : val))
@@ -35,20 +39,20 @@ const RowArranger = ({ row, cellConfigMap }: Props) => {
         gridTemplateColumns,
         display: "grid",
         columnGap: row.columnGap,
-        rowGap: row.rowGap
+        rowGap: row.rowGap,
       }}
     >
       {row.cells.map(({ cellItem }) => {
         if (typeof cellItem === "string") {
           return (
-            <Box>
+            <Box key={cellItem}>
               <Cell cellConfig={cellConfigMap[cellItem]} />
             </Box>
           );
         }
 
         return (
-          <Box>
+          <Box key={cellItem.id}>
             <ColumnArranger column={cellItem} cellConfigMap={cellConfigMap} />
           </Box>
         );

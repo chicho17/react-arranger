@@ -13,13 +13,21 @@ export type CellConfig<P = {}> = {
 
 export type Cell = string;
 
-type CellSpan = number | "1fr" | "full";
+export type CellSpan = number | "1fr";
 export type CellSpanTuple = [CellSpan, CellSpan, CellSpan];
+
+type RowContainerType = "COLUMN" | "ROW";
+type RowContainerTypeTuple = [
+  RowContainerType,
+  RowContainerType,
+  RowContainerType
+];
 
 export type Row = {
   id: string;
   isHidden: boolean;
   additional: Dict<any>;
+  containerType: RowContainerTypeTuple;
   columnGap: [number, number, number];
   rowGap: [number, number, number];
   cells: { cellItem: Cell | Column; cellSpan: CellSpanTuple }[];

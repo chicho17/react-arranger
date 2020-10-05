@@ -1,4 +1,4 @@
-import { Row, Cell, Column, CellSpanTuple } from "../types";
+import { Row, Cell, Column, CellSpan, CellSpanTuple } from "../types";
 
 function makeIdGenerator() {
   let id = 1;
@@ -13,8 +13,16 @@ function getCellId(cell: Cell | Column) {
   return typeof cell === "string" ? cell : cell.id;
 }
 
+function sanitizeCellSpan(cellSpan: CellSpan | CellSpanTuple): CellSpanTuple {
+  if (Array.isArray(cellSpan)) {
+    return cellSpan;
+  }
+  return [cellSpan, cellSpan, cellSpan];
+}
+
 class RowBuilder {
   id: Row["id"] = idGenerator();
+  containerType: Row["containerType"] = ["ROW", "ROW", "ROW"];
   isHidden: Row["isHidden"] = false;
   additional: Row["additional"] = {};
   columnGap: Row["columnGap"];
@@ -26,16 +34,18 @@ class RowBuilder {
     return new RowBuilder({
       xGap: row.columnGap,
       yGap: row.rowGap,
+      containerType: row.containerType,
       isHidden: row.isHidden,
       additional: row.additional,
       cells: row.cells,
-      id: row.id
+      id: row.id,
     });
   }
 
   constructor(input: {
     xGap: Row["columnGap"];
     yGap: Row["rowGap"];
+    containerType?: Row["containerType"];
     isHidden?: Row["isHidden"];
     additional?: Row["additional"];
     cells?: Row["cells"];
@@ -43,6 +53,10 @@ class RowBuilder {
   }) {
     this.columnGap = input.xGap;
     this.rowGap = input.yGap;
+
+    if (input.containerType != null) {
+      this.containerType = input.containerType;
+    }
 
     if (input.isHidden != null) {
       this.isHidden = input.isHidden;
@@ -66,8 +80,11 @@ class RowBuilder {
     return this;
   }
 
-  addCell(cell: Cell | Column, cellSpan: CellSpanTuple) {
-    this.cells = this.cells.concat({ cellItem: cell, cellSpan });
+  addCell(cell: Cell | Column, cellSpan: CellSpan | CellSpanTuple) {
+    this.cells = this.cells.concat({
+      cellItem: cell,
+      cellSpan: sanitizeCellSpan(cellSpan),
+    });
     this.cellIdToIndex.set(getCellId(cell), this.cells.length - 1);
     return this;
   }
@@ -79,7 +96,7 @@ class RowBuilder {
     }
     this.cells = [
       ...this.cells.slice(0, index),
-      ...this.cells.slice(index + 1)
+      ...this.cells.slice(index + 1),
     ];
     this.cellIdToIndex.delete(cellId);
     return this;
@@ -107,7 +124,8 @@ class RowBuilder {
       additional: this.additional,
       columnGap: this.columnGap,
       rowGap: this.rowGap,
-      cells: this.cells
+      containerType: this.containerType,
+      cells: this.cells,
     };
   }
 }

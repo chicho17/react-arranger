@@ -7,8 +7,8 @@ function Null() {
 
 class CellConfigBuilder<P extends {}> {
   cellId: string = "";
-  Component: React.ComponentType<P> = Null;
   componentProps: P = {} as P;
+  Component: React.ComponentType<P> = Null;
   isHidden = false;
 
   constructor(cellItem?: CellConfig<P>) {
@@ -41,7 +41,7 @@ class CellConfigBuilder<P extends {}> {
       cellId: this.cellId,
       Component: this.Component,
       componentProps: this.componentProps,
-      isHidden: this.isHidden
+      isHidden: this.isHidden,
     };
   }
 }

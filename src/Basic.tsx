@@ -6,7 +6,12 @@ import { Box } from "theme-ui";
 import { RowArranger } from "./components/RowArranger";
 import { ColumnBuilder } from "./builders/ColumnBuilder";
 
-const Block = ({ text, backgroundColor, textColor }) => {
+type BlockProps = {
+  text: string;
+  backgroundColor: string;
+  textColor: string;
+};
+const Block = ({ text, backgroundColor, textColor }: BlockProps) => {
   return (
     <Box
       backgroundColor={backgroundColor}
@@ -19,7 +24,7 @@ const Block = ({ text, backgroundColor, textColor }) => {
         borderRadius: 4,
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
       {text}
@@ -29,30 +34,32 @@ const Block = ({ text, backgroundColor, textColor }) => {
 
 const row = new RowBuilder({
   xGap: [0, 2, 4],
-  yGap: [4, 0, 0]
+  yGap: [4, 0, 0],
+  containerType: ["COLUMN", "ROW", "ROW"],
 })
-  .addCell("blue", ["full", 50, 50])
-  .addCell("purple", ["full", "1fr", "1fr"])
+  .addCell("blue", 50)
+  .addCell("purple", "1fr")
   .addCell(
     new ColumnBuilder({ yGap: [4, 4, 6] })
       .addCell("gray1")
       .addCell("gray2")
       .build(),
-    ["full", 80, 80]
+    ["1fr", 80, 120]
   )
   .build();
 
 const cellConfigMap = new CellConfigMapBuilder()
   .addCellConfig(
+    // @ts-ignore
     new CellConfigBuilder({
       cellId: "blue",
       Component: Block,
       componentProps: {
         text: "block 1",
         backgroundColor: "highlight",
-        textColor: "text"
+        textColor: "text",
       },
-      isHidden: false
+      isHidden: false,
     }).build()
   )
   .addCellConfig(
@@ -62,9 +69,9 @@ const cellConfigMap = new CellConfigMapBuilder()
       componentProps: {
         text: "block 2",
         backgroundColor: "primary",
-        textColor: "background"
+        textColor: "background",
       },
-      isHidden: false
+      isHidden: false,
     }).build()
   )
   .addCellConfig(
@@ -74,9 +81,9 @@ const cellConfigMap = new CellConfigMapBuilder()
       componentProps: {
         text: "block 3",
         backgroundColor: "gray",
-        textColor: "background"
+        textColor: "background",
       },
-      isHidden: false
+      isHidden: false,
     }).build()
   )
   .addCellConfig(
@@ -86,9 +93,9 @@ const cellConfigMap = new CellConfigMapBuilder()
       componentProps: {
         text: "block 4",
         backgroundColor: "muted",
-        textColor: "text"
+        textColor: "text",
       },
-      isHidden: false
+      isHidden: false,
     }).build()
   )
   .build();
